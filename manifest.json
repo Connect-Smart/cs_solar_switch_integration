@@ -1,0 +1,8 @@
+{
+    "domain": "cs_solar_switch",
+    "name": "CS Solar Switch",
+    "documentation": "https://github.com/Connect-Smart/cs_solar_switch_integration",
+    "dependencies": [],
+    "codeowners": ["@Connect-Smart"],
+    "requirements": []
+}
