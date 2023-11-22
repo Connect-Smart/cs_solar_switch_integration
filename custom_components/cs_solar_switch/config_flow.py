@@ -15,6 +15,5 @@ config_entry_flow.register_discovery_flow(
         domain=DOMAIN,
         title="Cs Solar Switch",
         data={},
-    ),
-    config_entries.CONN_CLASS_ASSUMED,
+    )
 )
