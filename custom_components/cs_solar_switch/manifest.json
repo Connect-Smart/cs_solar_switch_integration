@@ -1,8 +1,11 @@
-{
-    "domain": "cs_solar_switch",
-    "name": "CS Solar Switch",
-    "documentation": "https://github.com/Connect-Smart/cs_solar_switch_integration",
-    "dependencies": [],
-    "codeowners": ["@Connect-Smart"],
-    "requirements": []
+{ 
+  "domain": "cs_solar_switch",
+  "name": "CS Solar Switch",
+  "config_flow": true,
+  "version": "1.3.5",
+  "documentation": "https://github.com/Connect-Smart/cs_solar_switch_integration",
+  "issue_tracker": "https://github.com/Connect-Smart/cs_solar_switch_integration/issues",
+  "iot_class": "cloud_polling",
+  "codeowners": ["@Connect-Smart"],
+  "requirements": []
 }
