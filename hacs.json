@@ -1,6 +1,12 @@
 {
-	"name": "cs_solar_switch",
-	"content_in_root": false,
-	"iot_class": "cloud_polling",
-	"homeassistant": "2021.12.0b0"
-}
+	"name": "Cs Solar Switch",
+	"description": "Integration to control Cs Solar Switch via https://voxip.nl/api",
+	"domain": "cs_solar_switch",
+	"repository": "https://github.com/connect-smart/cs_solar_switch",
+	"version": "1.0",
+	"category": ["Switch"],
+	"configFlow": true,
+	"homeassistant": "1.0.0",
+	"communication": ["http"]
+  }
+  

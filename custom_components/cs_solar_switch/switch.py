@@ -1,54 +1,54 @@
+"""
+Custom component to integrate cs_solar_switch with Home Assistant.
+"""
 import logging
 import requests
-from homeassistant.helpers.entity import ToggleEntity
-
-from .const import DOMAIN
+import voluptuous as vol
+from homeassistant.const import CONF_API_KEY
+from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchEntity
+import homeassistant.helpers.config_validation as cv
 
 _LOGGER = logging.getLogger(__name__)
-#API_URL = "https://api.connect-smart.nl/cs_solar_switch"
-API_URL = "https://www.voxip.nl/api/"
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Set up the CS Solar Switch."""
-    async_add_entities([CSSolarSwitch()])
+DOMAIN = "cs_solar_switch"
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
+    vol.Required(CONF_API_KEY): cv.string,
+})
 
+def setup_platform(hass, config, add_entities, discovery_info=None):
+    api_key = config.get(CONF_API_KEY)
+    add_entities([CsSolarSwitch(api_key)], True)
 
-class CSSolarSwitch(ToggleEntity):
-    """Representation of a CS Solar Switch."""
-
-    def __init__(self):
-        """Initialize the switch."""
+class CsSolarSwitch(SwitchEntity):
+    def __init__(self, api_key):
+        self._api_key = api_key
         self._state = False
 
     @property
     def name(self):
-        """Return the name of the switch."""
-        return "CS Solar Switch"
+        return "Cs Solar Switch"
 
     @property
     def is_on(self):
-        """Return true if switch is on."""
         return self._state
 
-    async def async_turn_on(self, **kwargs):
-        """Turn the switch on."""
-        # Implement logic to update the switch state from the external API
-        self._update_state()
-        self.schedule_update_ha_state()
+    def turn_on(self, **kwargs):
+        self._state = True
 
-    async def async_turn_off(self, **kwargs):
-        """Turn the switch off."""
-        # Implement logic to update the switch state from the external API
-        self._update_state()
-        self.schedule_update_ha_state()
+    def turn_off(self, **kwargs):
+        self._state = False
 
-    def _update_state(self):
-        """Update the state from the external API."""
+    def update(self):
         try:
-            response = requests.get(API_URL)
-            response.raise_for_status()
+            # Make API request to https://voxip.nl/api and update switch state
+            response = requests.get("https://voxip.nl/api", headers={"Authorization": f"Bearer {self._api_key}"})
             data = response.json()
-            self._state = data["switch_state"]
-        except requests.exceptions.RequestException as err:
-            _LOGGER.error(f"Error updating state: {err}")
-            self._state = False  # Set to False in case of an error
+
+            # Check if the API response is True and update the switch state accordingly
+            if data.get("result") == True:
+                self._state = True
+            else:
+                self._state = False
+
+        except Exception as e:
+            _LOGGER.error(f"Error updating cs_solar_switch: {e}")
